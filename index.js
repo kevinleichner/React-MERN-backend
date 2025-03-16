@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express'); //require es como un using
 require('dotenv').config(); //Traemos las variables de entorno
 const cors = require('cors');
@@ -26,7 +27,10 @@ app.use('/api/auth', require('./routes/auth')); //Todo lo que el directorio rout
 
 app.use('/api/events', require('./routes/events'));
 
-
+app.use('*', (req, res) => { //Cualquier ruta va a ser manjeada por esta función
+    res.sendFile( path.join( __dirname, 'public/index.html' )); //Siempre va a devolver el archivo directorioDelProyecto/public/index.html (esto soluciona el error de, por ejemplo, cannot get /auth/login que se da
+                                                                //cuando queremos cargar manualmente una url desde express)
+});
 
 
 //Escuchar peticiones
